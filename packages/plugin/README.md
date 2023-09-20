@@ -9,7 +9,7 @@ After chunks are written to disk, any that contain a shebang will have their exe
 ## Install
 
 ```sh
-npm i -D vite-plugin-bin
+npm install --save-dev vite-plugin-bin
 ```
 
 ## Usage
