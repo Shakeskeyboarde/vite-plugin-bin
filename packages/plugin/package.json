@@ -8,6 +8,16 @@
     "url": "git+https://github.com/Shakeskeyboarde/vite-plugin-bin.git",
     "directory": "packages/plugin"
   },
+  "keywords": [
+    "vite",
+    "plugin",
+    "vite-plugin",
+    "bin",
+    "chmod",
+    "preserve",
+    "shebang",
+    "executable"
+  ],
   "scripts": {
     "build": "vite build"
   },
