@@ -1,0 +1,32 @@
+{
+  "name": "vite-plugin-bin",
+  "description": "Use Vite to bundle executable scripts.",
+  "version": "1.0.0",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shakeskeyboarde/vite-plugin-bin.git",
+    "directory": "packages/plugin"
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "type": "module",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "default": "./lib/index.cjs"
+    }
+  },
+  "devDependencies": {
+    "vite-plugin-dts": "^3.5.3"
+  },
+  "dependencies": {
+    "magic-string": "^0.30.3"
+  },
+  "peerDependencies": {
+    "vite": ">=4.4.9"
+  }
+}

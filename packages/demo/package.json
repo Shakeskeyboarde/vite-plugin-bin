@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "demo",
+  "description": "Demo for vite-plugin-bin.",
+  "version": "1.0.0",
+  "license": "ISC",
+  "scripts": {
+    "build": "vite build && npm update $npm_package_name"
+  },
+  "type": "module",
+  "bin": "lib/index.js",
+  "devDependencies": {
+    "vite": "^4.4.9",
+    "vite-plugin-bin": "*"
+  }
+}

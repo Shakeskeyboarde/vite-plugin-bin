@@ -1,0 +1,23 @@
+{
+  "name": "root",
+  "scripts": {
+    "build": "npm -w vite-plugin-bin run build",
+    "test": "eslint . --max-warnings=0 && npm run build && npm -w demo run build && npx demo",
+    "prepublishOnly": "npm run test && npm run build"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^20.6.3",
+    "eslint": "^8.49.0",
+    "eslint-config-rational": "^3.0.9",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true
+  }
+}
