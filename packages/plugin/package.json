@@ -20,10 +20,13 @@
   ],
   "scripts": {
     "build": "vite build",
-    "prepublishOnly": "npm run test && npm run build"
+    "prepublishOnly": "cd ../.. && npm test && cd - && npm run build"
   },
   "type": "module",
   "types": "./lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",

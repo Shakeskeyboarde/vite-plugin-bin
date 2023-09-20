@@ -1,12 +1,13 @@
 {
   "name": "root",
   "scripts": {
-    "build": "npm -w vite-plugin-bin run build",
-    "test": "eslint . --max-warnings=0 && npm run build && npm -w demo run build && npx demo",
-    "release": "npm -w vite-plugin-bin publish"
+    "lint": "eslint . --max-warnings=0",
+    "build": "npm run -ws --if-present build",
+    "test": "npm run lint && npm run build && npx demo"
   },
   "workspaces": [
-    "packages/*"
+    "packages/plugin",
+    "packages/demo"
   ],
   "type": "module",
   "devDependencies": {
