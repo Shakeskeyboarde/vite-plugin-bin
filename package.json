@@ -3,7 +3,7 @@
   "scripts": {
     "build": "npm -w vite-plugin-bin run build",
     "test": "eslint . --max-warnings=0 && npm run build && npm -w demo run build && npx demo",
-    "prepublishOnly": "npm run test && npm run build"
+    "release": "npm -w vite-plugin-bin publish"
   },
   "workspaces": [
     "packages/*"

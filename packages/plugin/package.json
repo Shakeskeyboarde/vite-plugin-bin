@@ -19,7 +19,8 @@
     "executable"
   ],
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "prepublishOnly": "npm run test && npm run build"
   },
   "type": "module",
   "types": "./lib/index.d.ts",
