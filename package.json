@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "root",
   "scripts": {
     "lint": "eslint . --max-warnings=0",
