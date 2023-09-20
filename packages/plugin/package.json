@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-bin",
   "description": "Use Vite to bundle executable scripts.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "ISC",
   "repository": {
     "type": "git",
@@ -38,6 +38,7 @@
     "vite-plugin-dts": "^3.5.3"
   },
   "dependencies": {
+    "chalk": "^5.3.0",
     "magic-string": "^0.30.3"
   },
   "peerDependencies": {

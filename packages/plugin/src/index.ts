@@ -1,10 +1,9 @@
 import { chmod, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
+import chalk from 'chalk';
 import MagicString from 'magic-string';
-import { type Plugin } from 'vite';
-
-const SHEBANG_REGEXP = /^#!.*/u;
+import { type Logger, type Plugin } from 'vite';
 
 type ShebangString = `#!${string}`;
 
@@ -18,6 +17,11 @@ interface Options {
    */
   executable?: boolean;
 }
+
+const SHEBANG_REGEXP = /^#!.*/u;
+const PREFIX = chalk.cyan('[vite:bin]');
+
+let logger: Logger;
 
 /**
  * Preserve shebangs and make chunks with shebangs executable.
@@ -42,6 +46,12 @@ export default (options?: Options): Plugin => {
           map: null,
         };
       },
+    },
+    configResolved: function (config) {
+      logger = {
+        ...config.logger,
+        info: (message, opts) => config.logger.info(`${PREFIX} ${chalk.green(message)}`, opts),
+      };
     },
     renderChunk: {
       /**
@@ -90,7 +100,8 @@ export default (options?: Options): Plugin => {
        * Make shebang-ed bundles executable after all is said and done.
        */
       order: 'post',
-      handler: async ({ dir }, bundle) => {
+      sequential: true,
+      handler: async function ({ dir }, bundle) {
         if (options?.executable === false) return;
 
         /**
@@ -105,6 +116,8 @@ export default (options?: Options): Plugin => {
             filename = resolve(dir, filename);
             const { mode } = await stat(filename);
             await chmod(filename, mode | 0o111);
+
+            logger.info(`Added shebang and executable bits to "${chunk.fileName}".`);
           }),
         );
       },
