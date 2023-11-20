@@ -4,7 +4,8 @@
   "scripts": {
     "lint": "eslint . --max-warnings=0",
     "build": "npm run -ws --if-present build",
-    "test": "npm run lint && npm run build && npx demo"
+    "test": "npm run lint && npm run build && npx demo",
+    "modernize": "npx npm-check-updates@latest -i --workspaces --root --format group"
   },
   "workspaces": [
     "packages/plugin",
@@ -12,11 +13,11 @@
   ],
   "type": "module",
   "devDependencies": {
-    "@types/node": "^20.6.3",
-    "eslint": "^8.49.0",
+    "@types/node": "^20.9.2",
+    "eslint": "^8.54.0",
     "eslint-config-rational": "^3.0.9",
-    "prettier": "^3.0.3",
-    "typescript": "^5.2.2"
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.2"
   },
   "prettier": {
     "printWidth": 120,

@@ -59,35 +59,49 @@ export default (options?: Options): Plugin => {
        */
       order: 'post',
       handler: function (code, chunk) {
-        /**
-         * Find all the module IDs that contributed to this chunk.
-         */
-        const moduleIds = [...Object.keys(chunk.modules), ...(chunk.facadeModuleId ? [chunk.facadeModuleId] : [])];
+        const isShebangPresent = code.startsWith('#!');
 
-        /**
-         * Find the _last_ module that has a saved shebang.
-         *
-         * XXX: Hopefully, only one module ID is an entry module (has
-         * `shebang` metadata). However, it's possible that an entry
-         * module may import another module that is _also an entry module
-         * with a shebang!_ If that happens, we use the last one and hope
-         * it's the entry module for this chunk. That is probably the
-         * case because we added the (poorly documented but probably
-         * correct) `facadeModuleId` at the end, and if that's not right,
-         * then the modules map seems to have the keys in reverse import
-         * order.
-         */
-        let shebang = moduleIds.reduce<ShebangString | undefined>((result, moduleId) => {
-          return this.getModuleInfo(moduleId)?.meta?.shebang ?? result;
-        }, undefined);
+        let shebang = isShebangPresent ? code.slice(0, code.indexOf('\n')) : undefined;
+
+        if (!shebang) {
+          /**
+           * Find all the module IDs that contributed to this chunk.
+           */
+          const moduleIds = [...Object.keys(chunk.modules), ...(chunk.facadeModuleId ? [chunk.facadeModuleId] : [])];
+
+          /**
+           * Find the _last_ module that has a saved shebang.
+           *
+           * XXX: Hopefully, only one module ID is an entry module (has
+           * `shebang` metadata). However, it's possible that an entry
+           * module may import another module that is _also an entry module
+           * with a shebang!_ If that happens, we use the last one and hope
+           * it's the entry module for this chunk. That is probably the
+           * case because we added the (poorly documented but probably
+           * correct) `facadeModuleId` at the end, and if that's not right,
+           * then the modules map seems to have the keys in reverse import
+           * order.
+           */
+          shebang = moduleIds.reduce<ShebangString | undefined>((result, moduleId) => {
+            return this.getModuleInfo(moduleId)?.meta?.shebang ?? result;
+          }, undefined);
+        }
 
         if (!shebang) return null;
 
         if (options?.shebang) {
-          shebang = typeof options.shebang === 'function' ? options.shebang(shebang) : options.shebang;
+          shebang = typeof options.shebang === 'function' ? options.shebang(shebang as ShebangString) : options.shebang;
+        } else if (isShebangPresent) {
+          return null;
         }
 
-        const ms = new MagicString(code).prepend(`${shebang}\n`);
+        let ms = new MagicString(code);
+
+        if (isShebangPresent) {
+          ms = ms.replace(/^#![^\n]*(?:$|\n)/u, `${shebang}\n`);
+        } else {
+          ms = ms.prepend(`${shebang}\n`);
+        }
 
         return {
           code: ms.toString(),
